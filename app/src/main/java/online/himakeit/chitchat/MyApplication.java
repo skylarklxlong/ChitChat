@@ -5,12 +5,19 @@ import android.content.Context;
 import android.os.Process;
 import android.support.multidex.MultiDexApplication;
 
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.dumpapp.DumperPlugin;
+import com.facebook.stetho.inspector.database.DefaultDatabaseConnectionProvider;
+import com.facebook.stetho.inspector.protocol.ChromeDevtoolsDomain;
 import com.socks.library.KLog;
 
 import io.rong.imageloader.core.DisplayImageOptions;
 import io.rong.imageloader.core.display.FadeInBitmapDisplayer;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.ipc.RongExceptionHandler;
+import online.himakeit.chitchat.stetho.MyDatabaseDriver;
+import online.himakeit.chitchat.stetho.MyDatabaseFilesProvider;
+import online.himakeit.chitchat.utils.SharedPreferencesContext;
 
 /**
  * @author：LiXueLong
@@ -22,26 +29,27 @@ import io.rong.imlib.ipc.RongExceptionHandler;
 public class MyApplication extends MultiDexApplication {
 
     private static DisplayImageOptions options;
+    private static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        /*Stetho.initialize(new Stetho.Initializer(this) {
-            @Nullable
+        context = getApplicationContext();
+
+        Stetho.initialize(new Stetho.Initializer(this) {
             @Override
             protected Iterable<DumperPlugin> getDumperPlugins() {
-                return new Stetho.DefaultDumperPluginsBuilder(MyApplication.this).finish();
+                return new Stetho.DefaultDumperPluginsBuilder(context).finish();
             }
 
-            @Nullable
             @Override
             protected Iterable<ChromeDevtoolsDomain> getInspectorModules() {
-                Stetho.DefaultInspectorModulesBuilder defaultInspectorModulesBuilder = new Stetho.DefaultInspectorModulesBuilder(MyApplication.this);
-                defaultInspectorModulesBuilder.provideDatabaseDriver(MyApplication.this, , new DefaultDatabaseConnectionProvider())
+                Stetho.DefaultInspectorModulesBuilder defaultInspectorModulesBuilder = new Stetho.DefaultInspectorModulesBuilder(context);
+                defaultInspectorModulesBuilder.provideDatabaseDriver(new MyDatabaseDriver(context, new MyDatabaseFilesProvider(context), new DefaultDatabaseConnectionProvider()));
                 return defaultInspectorModulesBuilder.finish();
             }
-        });*/
-        if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext()))) {
+        });
+        if (getApplicationInfo().packageName.equals(getCurProcessName(context))) {
 
             // TODO: 2018/1/8 推送消息配置
 
@@ -57,7 +65,7 @@ public class MyApplication extends MultiDexApplication {
             RongIM.init(this);
             initLog();
 //            SealAppContext.init(this);
-//            SharedPreferencesContext.init(this);
+            SharedPreferencesContext.init(this);
             Thread.setDefaultUncaughtExceptionHandler(new RongExceptionHandler(this));
 
             try {
@@ -73,6 +81,10 @@ public class MyApplication extends MultiDexApplication {
             initImageOptiions();
 
         }
+    }
+
+    public static Context getContext() {
+        return context;
     }
 
     private void openSealDBIfHasCachedToken() {
