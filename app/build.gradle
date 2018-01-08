@@ -28,51 +28,48 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-
     /**
-     * 融云
-     * IMKit 集成了会话界面，并且提供了丰富的自定义功能，我们推荐首次接触融云的客户直接使用 IMKit 来快速集成和开发。
-     * IMLib 提供了基础的通信能力，较轻量，适用于对 UI 有较高订制需求的开发者，但您需要自己去实现大量的界面和功能。
-     * CallKit 融云音视频通话的界面组件，包含了单人、多人音视频通话的界面的各种场景和功能。您可以通过集成该组件来实现丰富的音视频通话界面，并进行自己的 UI 定制开发。同时我们开源了 CallKit，您可以根据您的需要去使用。
-     * CallLib 融云音视频通话核心能力组件。
-     * LocationLib 位置相关库文件
-     * PushLib 融云支持第三方推送（小米），您可以从这里下载对应的第三方推送 jar 包。
-     * RedPacket 融云红包相关组件，通过集成该组件，即可快速实现红包功能。
+     *  融云
+     *  IMKit 集成了会话界面，并且提供了丰富的自定义功能，我们推荐首次接触融云的客户直接使用 IMKit 来快速集成和开发。
+     *  IMLib 提供了基础的通信能力，较轻量，适用于对 UI 有较高订制需求的开发者，但您需要自己去实现大量的界面和功能。
+     *  CallKit 融云音视频通话的界面组件，包含了单人、多人音视频通话的界面的各种场景和功能。您可以通过集成该组件来实现丰富的音视频通话界面，并进行自己的 UI 定制开发。同时我们开源了 CallKit，您可以根据您的需要去使用。
+     *  CallLib 融云音视频通话核心能力组件。
+     *  LocationLib 位置相关库文件
+     *  PushLib 融云支持第三方推送（小米），您可以从这里下载对应的第三方推送 jar 包。
+     *  RedPacket 融云红包相关组件，通过集成该组件，即可快速实现红包功能。
      */
     compile 'cn.rongcloud.android:IMLib:2.8.6'
     compile 'cn.rongcloud.android:IMKit:2.8.6'
     compile 'cn.rongcloud.android:CallLib:2.8.6'
     compile 'cn.rongcloud.android:CallKit:2.8.6'
     compile 'cn.rongcloud.android:RedPacket:2.8.6'
-
     /**
-     *      facebook调试工具
-     *      在Application中初始化就可以用了
-     *      Stetho.initializeWithDefaults(this);
-     *      打开Chrome浏览器 地址栏输入chrome://inspect
-     *      进入页面后，在左边的DevTools -> Devices -> Remote Target下，
-     *      可以找到你连接的手机设备，点开后就会出现调试页面了，后面就自己研究吧，
-     *      不光可以调试网络请求，还可以查看手机中的数据库和SharePreference等持久化文件，
-     *      而且不用root，很强大！
+     *       facebook调试工具
+     *       在Application中初始化就可以用了
+     *       Stetho.initializeWithDefaults(this);
+     *       打开Chrome浏览器 地址栏输入chrome://inspect
+     *       进入页面后，在左边的DevTools -> Devices -> Remote Target下，
+     *       可以找到你连接的手机设备，点开后就会出现调试页面了，后面就自己研究吧，
+     *       不光可以调试网络请求，还可以查看手机中的数据库和SharePreference等持久化文件，
+     *       而且不用root，很强大！
      作者：小枫
      链接：http://www.jianshu.com/p/cc086b60f4ef
      */
     compile 'com.facebook.stetho:stetho:1.4.1'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.1'
-
     /**
      *
      */
     compile 'com.android.support:multidex:1.0.1'
-
     /**
-     * Log日志
+     *  Log日志
      */
     compile 'com.github.zhaokaiqiang.klog:library:1.6.0'
+    implementation files('libs/greendao-1.3.7.jar')
 }
