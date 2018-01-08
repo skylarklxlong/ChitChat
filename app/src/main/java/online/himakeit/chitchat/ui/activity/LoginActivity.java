@@ -1,19 +1,20 @@
-package online.himakeit.chitchat;
+package online.himakeit.chitchat.ui.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import online.himakeit.chitchat.R;
 /**
  * @author：LiXueLong
- * @date:2018/1/6-20:14
+ * @date:2018/1/8-15:39
  * @mail1：skylarklxlong@outlook.com
  * @mail2：li_xuelong@126.com
- * @des：MainActivity
+ * @des：LoginActivity
  */
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
     }
 }
