@@ -18,6 +18,7 @@ import io.rong.imlib.ipc.RongExceptionHandler;
 import online.himakeit.chitchat.stetho.MyDatabaseDriver;
 import online.himakeit.chitchat.stetho.MyDatabaseFilesProvider;
 import online.himakeit.chitchat.utils.SharedPreferencesContext;
+import online.himakeit.chitchat.utils.Toasts;
 
 /**
  * @author：LiXueLong
@@ -64,6 +65,7 @@ public class MyApplication extends MultiDexApplication {
              */
             RongIM.init(this);
             initLog();
+            initToast();
 //            SealAppContext.init(this);
             SharedPreferencesContext.init(this);
             Thread.setDefaultUncaughtExceptionHandler(new RongExceptionHandler(this));
@@ -81,6 +83,10 @@ public class MyApplication extends MultiDexApplication {
             initImageOptiions();
 
         }
+    }
+
+    private void initToast() {
+        Toasts.register(context);
     }
 
     public static Context getContext() {
