@@ -6,4 +6,10 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorBlack">#000000</color>
     <color name="colorWhitePress">#e8e8e8</color>
+
+
+    <color name="color_text_01">#ffffff</color>
+    <color name="color_text_02">#999999</color>
+    <color name="color_text_03">#7c7c7c</color>
+    <color name="color_text_04">#454545</color>
 </resources>
