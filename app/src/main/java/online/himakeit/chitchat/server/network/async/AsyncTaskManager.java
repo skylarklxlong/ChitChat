@@ -93,7 +93,7 @@ public class AsyncTaskManager {
      * @param isCheckNetWork 是否检查网络 true检查 false不检查
      * @param listener       回调监听
      */
-    private void request(int requestCode, boolean isCheckNetWork, OnDataListener listener) {
+    public void request(int requestCode, boolean isCheckNetWork, OnDataListener listener) {
         if (requestCode > 0) {
             EventBus.getDefault().post(new AsyncRequest(requestCode, isCheckNetWork, listener));
         }
