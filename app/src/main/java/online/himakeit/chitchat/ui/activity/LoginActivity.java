@@ -1,5 +1,6 @@
 package online.himakeit.chitchat.ui.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -9,6 +10,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -27,6 +29,8 @@ import online.himakeit.chitchat.server.response.GetTokenResponse;
 import online.himakeit.chitchat.server.response.GetUserInfoByIdResponse;
 import online.himakeit.chitchat.server.response.LoginResponse;
 import online.himakeit.chitchat.ui.widget.ClearWriteEditText;
+import online.himakeit.chitchat.ui.widget.LoadDialog;
+import online.himakeit.chitchat.utils.KeyboardUtils;
 import online.himakeit.chitchat.utils.TextStrUtils;
 import online.himakeit.chitchat.utils.Toasts;
 
@@ -92,7 +96,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 11) {
-                    // TODO: 2018/1/9 动画改变
+                    KeyboardUtils.hideSoftInput(mContext, mCwdUserName);
                 }
             }
 
@@ -112,17 +116,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             mCwdPassWord.setText(mStrOldPassword);
         }
 
-        // TODO: 2018/1/9 帐号在其他设备登录，需强制下线
+        if (getIntent().getBooleanExtra("kickedByOtherClient", false)) {
+            final AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+            alertDialog.show();
+            Window window = alertDialog.getWindow();
+            window.setContentView(R.layout.dialog_login);
+            TextView mTvOk = window.findViewById(R.id.tv_ok);
+            mTvOk.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.cancel();
+                }
+            });
+
+        }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_login_forgot:
-                // TODO: 2018/1/9 跳转到忘记密码界面
+                startActivityForResult(new Intent(LoginActivity.this, ForgetPasswordActivity.class), 1);
                 break;
             case R.id.tv_login_register:
-                // TODO: 2018/1/9 跳转到注册界面
+                startActivityForResult(new Intent(LoginActivity.this, RegisterActivity.class), 1);
                 break;
             case R.id.btn_login_sign:
                 phoneString = mCwdUserName.getText().toString().trim();
@@ -147,7 +164,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     mCwdPassWord.shakeAnimation();
                     return;
                 }
-                // TODO: 2018/1/9 显示正在加载对话框
+                LoadDialog.show(mContext);
                 mSpEditor.putBoolean("exit", false);
                 mSpEditor.apply();
                 request(LOGIN, true);
@@ -155,6 +172,31 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             default:
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 2 && data != null) {
+            String phone = data.getStringExtra("phone");
+            String password = data.getStringExtra("password");
+            mCwdUserName.setText(phone);
+            mCwdPassWord.setText(password);
+        } else if (requestCode == 1 && data != null) {
+            String phone = data.getStringExtra("phone");
+            String password = data.getStringExtra("password");
+            String id = data.getStringExtra("id");
+            String nickname = data.getStringExtra("nickname");
+            if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(id) && !TextUtils.isEmpty(nickname)) {
+                mCwdUserName.setText(phone);
+                mCwdPassWord.setText(password);
+                mSpEditor.putString(Constant.SEALTALK_LOGING_PHONE, phone);
+                mSpEditor.putString(Constant.SEALTALK_LOGING_PASSWORD, password);
+                mSpEditor.putString(Constant.SEALTALK_LOGIN_ID, id);
+                mSpEditor.putString(Constant.SEALTALK_LOGIN_NAME, nickname);
+                mSpEditor.apply();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -205,10 +247,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             });
                         }
                     } else if (loginResponse.getCode() == 100) {
-                        // TODO: 2018/1/9 取消正在加载对话框
+                        LoadDialog.dismiss(mContext);
                         Toasts.showShort("手机号码或密码错误");
                     } else if (loginResponse.getCode() == 1000) {
-                        // TODO: 2018/1/9 取消正在加载对话框
+                        LoadDialog.dismiss(mContext);
                         Toasts.showShort("手机号码或密码错误");
                     }
                     break;
@@ -269,15 +311,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         // TODO: 2018/1/9 判断是否有网
         switch (requestCode) {
             case LOGIN:
-                // TODO: 2018/1/9 取消正在加载对话框
+                LoadDialog.dismiss(mContext);
                 Toasts.showShort("登录接口请求失败");
                 break;
             case GET_TOKEN:
-                // TODO: 2018/1/9 取消正在加载对话框
+                LoadDialog.dismiss(mContext);
                 Toasts.showShort("获取token接口请求失败");
                 break;
             case SYNC_USER_INFO:
-                // TODO: 2018/1/9 取消正在加载对话框
+                LoadDialog.dismiss(mContext);
                 Toasts.showShort("同步用户信息接口请求失败");
                 break;
             default:
