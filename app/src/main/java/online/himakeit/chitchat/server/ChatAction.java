@@ -74,7 +74,7 @@ import online.himakeit.chitchat.server.response.SyncTotalDataResponse;
 import online.himakeit.chitchat.server.response.UserRelationshipResponse;
 import online.himakeit.chitchat.server.response.VerifyCodeResponse;
 import online.himakeit.chitchat.server.response.VersionResponse;
-import online.himakeit.chitchat.utils.JsonMananger;
+import online.himakeit.chitchat.utils.JsonManager;
 
 /**
  * @author：LiXueLong
@@ -105,7 +105,7 @@ public class ChatAction extends BaseAction {
      */
     public CheckPhoneResponse checkPhoneAvailable(String region, String phone) throws HttpException {
         String url = getURL("user/check_phone_available");
-        String json = JsonMananger.beanToJson(new CheckPhoneRequest(phone, region));
+        String json = JsonManager.beanToJson(new CheckPhoneRequest(phone, region));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -131,7 +131,7 @@ public class ChatAction extends BaseAction {
      */
     public SendCodeResponse sendCode(String region, String phone) throws HttpException {
         String url = getURL("user/send_code");
-        String json = JsonMananger.beanToJson(new SendCodeRequest(region, phone));
+        String json = JsonManager.beanToJson(new SendCodeRequest(region, phone));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -142,7 +142,7 @@ public class ChatAction extends BaseAction {
         SendCodeResponse response = null;
         String result = httpManager.post(mContext, url, entity, CONTENT_TYPE);
         if (!TextUtils.isEmpty(result)) {
-            response = JsonMananger.jsonToBean(result, SendCodeResponse.class);
+            response = JsonManager.jsonToBean(result, SendCodeResponse.class);
         }
         return response;
     }
@@ -166,7 +166,7 @@ public class ChatAction extends BaseAction {
      */
     public VerifyCodeResponse verifyCode(String region, String phone, String code) throws HttpException {
         String url = getURL("user/verify_code");
-        String json = JsonMananger.beanToJson(new VerifyCodeRequest(region, phone, code));
+        String json = JsonManager.beanToJson(new VerifyCodeRequest(region, phone, code));
         VerifyCodeResponse response = null;
         StringEntity entity = null;
         try {
@@ -195,7 +195,7 @@ public class ChatAction extends BaseAction {
         String url = getURL("user/register");
         StringEntity entity = null;
         try {
-            entity = new StringEntity(JsonMananger.beanToJson(new RegisterRequest(nickname, password, verification_token)), ENCODING);
+            entity = new StringEntity(JsonManager.beanToJson(new RegisterRequest(nickname, password, verification_token)), ENCODING);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -218,7 +218,7 @@ public class ChatAction extends BaseAction {
      */
     public LoginResponse login(String region, String phone, String password) throws HttpException {
         String uri = getURL("user/login");
-        String json = JsonMananger.beanToJson(new LoginRequest(region, phone, password));
+        String json = JsonManager.beanToJson(new LoginRequest(region, phone, password));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -230,7 +230,7 @@ public class ChatAction extends BaseAction {
         LoginResponse response = null;
         if (!TextUtils.isEmpty(result)) {
             KLog.e("LoginResponse", result);
-            response = JsonMananger.jsonToBean(result, LoginResponse.class);
+            response = JsonManager.jsonToBean(result, LoginResponse.class);
         }
         return response;
     }
@@ -260,7 +260,7 @@ public class ChatAction extends BaseAction {
      */
     public SetNameResponse setName(String nickname) throws HttpException {
         String url = getURL("user/set_nickname");
-        String json = JsonMananger.beanToJson(new SetNameRequest(nickname));
+        String json = JsonManager.beanToJson(new SetNameRequest(nickname));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -284,7 +284,7 @@ public class ChatAction extends BaseAction {
      */
     public SetPortraitResponse setPortrait(String portraitUri) throws HttpException {
         String url = getURL("user/set_portrait_uri");
-        String json = JsonMananger.beanToJson(new SetPortraitRequest(portraitUri));
+        String json = JsonManager.beanToJson(new SetPortraitRequest(portraitUri));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -310,7 +310,7 @@ public class ChatAction extends BaseAction {
      */
     public ChangePasswordResponse changePassword(String oldPassword, String newPassword) throws HttpException {
         String url = getURL("user/change_password");
-        String json = JsonMananger.beanToJson(new ChangePasswordRequest(oldPassword, newPassword));
+        String json = JsonManager.beanToJson(new ChangePasswordRequest(oldPassword, newPassword));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -337,7 +337,7 @@ public class ChatAction extends BaseAction {
      */
     public RestPasswordResponse restPassword(String password, String verification_token) throws HttpException {
         String uri = getURL("user/reset_password");
-        String json = JsonMananger.beanToJson(new RestPasswordRequest(password, verification_token));
+        String json = JsonManager.beanToJson(new RestPasswordRequest(password, verification_token));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -398,7 +398,7 @@ public class ChatAction extends BaseAction {
      */
     public FriendInvitationResponse sendFriendInvitation(String userid, String addFriendMessage) throws HttpException {
         String url = getURL("friendship/invite");
-        String json = JsonMananger.beanToJson(new FriendInvitationRequest(userid, addFriendMessage));
+        String json = JsonManager.beanToJson(new FriendInvitationRequest(userid, addFriendMessage));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -453,7 +453,7 @@ public class ChatAction extends BaseAction {
      */
     public AgreeFriendsResponse agreeFriends(String friendId) throws HttpException {
         String url = getURL("friendship/agree");
-        String json = JsonMananger.beanToJson(new AgreeFriendsRequest(friendId));
+        String json = JsonManager.beanToJson(new AgreeFriendsRequest(friendId));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -478,7 +478,7 @@ public class ChatAction extends BaseAction {
      */
     public CreateGroupResponse createGroup(String name, List<String> memberIds) throws HttpException {
         String url = getURL("group/create");
-        String json = JsonMananger.beanToJson(new CreateGroupRequest(name, memberIds));
+        String json = JsonManager.beanToJson(new CreateGroupRequest(name, memberIds));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -503,7 +503,7 @@ public class ChatAction extends BaseAction {
      */
     public SetGroupPortraitResponse setGroupPortrait(String groupId, String portraitUri) throws HttpException {
         String url = getURL("group/set_portrait_uri");
-        String json = JsonMananger.beanToJson(new SetGroupPortraitRequest(groupId, portraitUri));
+        String json = JsonManager.beanToJson(new SetGroupPortraitRequest(groupId, portraitUri));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -575,7 +575,7 @@ public class ChatAction extends BaseAction {
      */
     public AddGroupMemberResponse addGroupMember(String groupId, List<String> memberIds) throws HttpException {
         String url = getURL("group/add");
-        String json = JsonMananger.beanToJson(new AddGroupMemberRequest(groupId, memberIds));
+        String json = JsonManager.beanToJson(new AddGroupMemberRequest(groupId, memberIds));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -600,7 +600,7 @@ public class ChatAction extends BaseAction {
      */
     public DeleteGroupMemberResponse deleGroupMember(String groupId, List<String> memberIds) throws HttpException {
         String url = getURL("group/kick");
-        String json = JsonMananger.beanToJson(new DeleteGroupMemberRequest(groupId, memberIds));
+        String json = JsonManager.beanToJson(new DeleteGroupMemberRequest(groupId, memberIds));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -625,7 +625,7 @@ public class ChatAction extends BaseAction {
      */
     public SetGroupNameResponse setGroupName(String groupId, String name) throws HttpException {
         String url = getURL("group/rename");
-        String json = JsonMananger.beanToJson(new SetGroupNameRequest(groupId, name));
+        String json = JsonManager.beanToJson(new SetGroupNameRequest(groupId, name));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -649,7 +649,7 @@ public class ChatAction extends BaseAction {
      */
     public QuitGroupResponse quitGroup(String groupId) throws HttpException {
         String url = getURL("group/quit");
-        String json = JsonMananger.beanToJson(new QuitGroupRequest(groupId));
+        String json = JsonManager.beanToJson(new QuitGroupRequest(groupId));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -673,7 +673,7 @@ public class ChatAction extends BaseAction {
      */
     public DismissGroupResponse dissmissGroup(String groupId) throws HttpException {
         String url = getURL("group/dismiss");
-        String json = JsonMananger.beanToJson(new DismissGroupRequest(groupId));
+        String json = JsonManager.beanToJson(new DismissGroupRequest(groupId));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -699,7 +699,7 @@ public class ChatAction extends BaseAction {
      */
     public SetGroupDisplayNameResponse setGroupDisplayName(String groupId, String displayName) throws HttpException {
         String url = getURL("group/set_display_name");
-        String json = JsonMananger.beanToJson(new SetGroupDisplayNameRequest(groupId, displayName));
+        String json = JsonManager.beanToJson(new SetGroupDisplayNameRequest(groupId, displayName));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -723,7 +723,7 @@ public class ChatAction extends BaseAction {
      */
     public DeleteFriendResponse deleteFriend(String friendId) throws HttpException {
         String url = getURL("friendship/delete");
-        String json = JsonMananger.beanToJson(new DeleteFriendRequest(friendId));
+        String json = JsonManager.beanToJson(new DeleteFriendRequest(friendId));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -748,7 +748,7 @@ public class ChatAction extends BaseAction {
      */
     public SetFriendDisplayNameResponse setFriendDisplayName(String friendId, String displayName) throws HttpException {
         String url = getURL("friendship/set_display_name");
-        String json = JsonMananger.beanToJson(new SetFriendDisplayNameRequest(friendId, displayName));
+        String json = JsonManager.beanToJson(new SetFriendDisplayNameRequest(friendId, displayName));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -787,7 +787,7 @@ public class ChatAction extends BaseAction {
      */
     public AddToBlackListResponse addToBlackList(String friendId) throws HttpException {
         String url = getURL("user/add_to_blacklist");
-        String json = JsonMananger.beanToJson(new AddToBlackListRequest(friendId));
+        String json = JsonManager.beanToJson(new AddToBlackListRequest(friendId));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -811,7 +811,7 @@ public class ChatAction extends BaseAction {
      */
     public RemoveFromBlackListResponse removeFromBlackList(String friendId) throws HttpException {
         String url = getURL("user/remove_from_blacklist");
-        String json = JsonMananger.beanToJson(new RemoveFromBlacklistRequest(friendId));
+        String json = JsonManager.beanToJson(new RemoveFromBlacklistRequest(friendId));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);
@@ -846,7 +846,7 @@ public class ChatAction extends BaseAction {
      */
     public JoinGroupResponse JoinGroup(String groupId) throws HttpException {
         String url = getURL("group/join");
-        String json = JsonMananger.beanToJson(new JoinGroupRequest(groupId));
+        String json = JsonManager.beanToJson(new JoinGroupRequest(groupId));
         StringEntity entity = null;
         try {
             entity = new StringEntity(json, ENCODING);

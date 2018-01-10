@@ -48,7 +48,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private static final int SYNC_USER_INFO = 9;
 
     private ImageView mIvBackground;
-    private ClearWriteEditText mCwdUserName, mCwdPassWord;
+    private ClearWriteEditText mCwedUserName, mCwedPassWord;
     private String phoneString;
     private String passwordString;
     private String connectResultId;
@@ -69,8 +69,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void initview() {
         mIvBackground = findViewById(R.id.iv_login_background);
-        mCwdUserName = findViewById(R.id.cwed_login_phone);
-        mCwdPassWord = findViewById(R.id.cwed_login_pwd);
+        mCwedUserName = findViewById(R.id.cwed_login_phone);
+        mCwedPassWord = findViewById(R.id.cwed_login_pwd);
         Button mBtnSign = findViewById(R.id.btn_login_sign);
         TextView mTvForgot = findViewById(R.id.tv_login_forgot);
         TextView mTvRegister = findViewById(R.id.tv_login_register);
@@ -87,7 +87,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         }, 200);
 
-        mCwdUserName.addTextChangedListener(new TextWatcher() {
+        mCwedUserName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -96,7 +96,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() == 11) {
-                    KeyboardUtils.hideSoftInput(mContext, mCwdUserName);
+                    KeyboardUtils.hideSoftInput(mContext, mCwedUserName);
                 }
             }
 
@@ -112,8 +112,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         String mStrOldPhone = mSp.getString(Constant.SEALTALK_LOGING_PHONE, "");
         String mStrOldPassword = mSp.getString(Constant.SEALTALK_LOGING_PASSWORD, "");
         if (!TextUtils.isEmpty(mStrOldPhone) && !TextUtils.isEmpty(mStrOldPassword)) {
-            mCwdUserName.setText(mStrOldPhone);
-            mCwdPassWord.setText(mStrOldPassword);
+            mCwedUserName.setText(mStrOldPhone);
+            mCwedPassWord.setText(mStrOldPassword);
         }
 
         if (getIntent().getBooleanExtra("kickedByOtherClient", false)) {
@@ -142,26 +142,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 startActivityForResult(new Intent(LoginActivity.this, RegisterActivity.class), 1);
                 break;
             case R.id.btn_login_sign:
-                phoneString = mCwdUserName.getText().toString().trim();
-                passwordString = mCwdPassWord.getText().toString().trim();
+                phoneString = mCwedUserName.getText().toString().trim();
+                passwordString = mCwedPassWord.getText().toString().trim();
                 if (TextUtils.isEmpty(phoneString)) {
                     Toasts.showShort("手机号不能为空");
-                    mCwdUserName.shakeAnimation();
+                    mCwedUserName.shakeAnimation();
                     return;
                 }
                 if (TextStrUtils.isMobileNum(phoneString)) {
                     Toasts.showShort("请输入正确的手机号码");
-                    mCwdUserName.shakeAnimation();
+                    mCwedUserName.shakeAnimation();
                     return;
                 }
                 if (TextUtils.isEmpty(passwordString)) {
                     Toasts.showShort("密码不能为空");
-                    mCwdPassWord.shakeAnimation();
+                    mCwedPassWord.shakeAnimation();
                     return;
                 }
                 if (" ".equals(passwordString)) {
                     Toasts.showShort("密码不能为包含空格");
-                    mCwdPassWord.shakeAnimation();
+                    mCwedPassWord.shakeAnimation();
                     return;
                 }
                 LoadDialog.show(mContext);
@@ -179,16 +179,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         if (requestCode == 2 && data != null) {
             String phone = data.getStringExtra("phone");
             String password = data.getStringExtra("password");
-            mCwdUserName.setText(phone);
-            mCwdPassWord.setText(password);
+            mCwedUserName.setText(phone);
+            mCwedPassWord.setText(password);
         } else if (requestCode == 1 && data != null) {
             String phone = data.getStringExtra("phone");
             String password = data.getStringExtra("password");
             String id = data.getStringExtra("id");
             String nickname = data.getStringExtra("nickname");
             if (!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(password) && !TextUtils.isEmpty(id) && !TextUtils.isEmpty(nickname)) {
-                mCwdUserName.setText(phone);
-                mCwdPassWord.setText(password);
+                mCwedUserName.setText(phone);
+                mCwedPassWord.setText(password);
                 mSpEditor.putString(Constant.SEALTALK_LOGING_PHONE, phone);
                 mSpEditor.putString(Constant.SEALTALK_LOGING_PASSWORD, password);
                 mSpEditor.putString(Constant.SEALTALK_LOGIN_ID, id);

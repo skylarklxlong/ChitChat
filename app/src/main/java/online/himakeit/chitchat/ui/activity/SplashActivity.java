@@ -9,7 +9,9 @@ import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
+import io.rong.imkit.RongIM;
 import online.himakeit.chitchat.R;
+import online.himakeit.chitchat.SealAppContext;
 
 /**
  * @author：LiXueLong
@@ -35,8 +37,7 @@ public class SplashActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("config", MODE_PRIVATE);
         String loginToken = sharedPreferences.getString("loginToken", "");
         if (!TextUtils.isEmpty(loginToken)) {
-            // TODO: 2018/1/8 登录过进入主界面
-            //RongIM.connect(loginToken,SealAppContext.getInstance().getConnectCallback());
+            RongIM.connect(loginToken, SealAppContext.getInstance().getConnectCallback());
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -44,7 +45,6 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }, 800);
         } else {
-            // TODO: 2018/1/8 未登录过进入登录界面
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

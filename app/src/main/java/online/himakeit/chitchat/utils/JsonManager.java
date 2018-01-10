@@ -16,12 +16,12 @@ import online.himakeit.chitchat.server.network.http.HttpException;
  * @mail2：li_xuelong@126.com
  * @des:
  */
-public class JsonMananger {
+public class JsonManager {
     static {
         TypeUtils.compatibleWithJavaBean = true;
     }
 
-    private static final String tag = JsonMananger.class.getSimpleName();
+    private static final String tag = JsonManager.class.getSimpleName();
 
     /**
      * 将json字符串转换成java对象

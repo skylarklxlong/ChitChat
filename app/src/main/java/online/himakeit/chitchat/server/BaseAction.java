@@ -6,7 +6,7 @@ import java.util.List;
 
 import online.himakeit.chitchat.server.network.http.HttpException;
 import online.himakeit.chitchat.server.network.http.SyncHttpClient;
-import online.himakeit.chitchat.utils.JsonMananger;
+import online.himakeit.chitchat.utils.JsonManager;
 
 /**
  * @author：LiXueLong
@@ -39,7 +39,7 @@ public class BaseAction {
      * @throws HttpException
      */
     public <T> T jsonToBean(String json, Class<T> cls) throws HttpException {
-        return JsonMananger.jsonToBean(json, cls);
+        return JsonManager.jsonToBean(json, cls);
     }
 
     /**
@@ -50,7 +50,7 @@ public class BaseAction {
      * @throws HttpException
      */
     public <T> List<T> jsonToList(String json, Class<T> cls) throws HttpException {
-        return JsonMananger.jsonToList(json, cls);
+        return JsonManager.jsonToList(json, cls);
     }
 
     /**
@@ -60,7 +60,7 @@ public class BaseAction {
      * @throws HttpException
      */
     public String BeanTojson(Object obj) throws HttpException {
-        return JsonMananger.beanToJson(obj);
+        return JsonManager.beanToJson(obj);
     }
 
 
