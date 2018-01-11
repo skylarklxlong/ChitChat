@@ -1,9 +1,10 @@
 package online.himakeit.chitchat.ui.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 
 import online.himakeit.chitchat.R;
+
 /**
  * @author：LiXueLong
  * @date:2018/1/8-15:39
@@ -11,7 +12,7 @@ import online.himakeit.chitchat.R;
  * @mail2：li_xuelong@126.com
  * @des：MainActivity
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
