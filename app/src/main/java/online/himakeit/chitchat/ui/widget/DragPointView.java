@@ -15,7 +15,6 @@ import android.graphics.drawable.StateListDrawable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,6 +24,8 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.AbsListView;
 import android.widget.ScrollView;
+
+import com.socks.library.KLog;
 
 /**
  * @author：LiXueLong
@@ -65,6 +66,9 @@ public class DragPointView extends AppCompatTextView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int w = getMeasuredWidth();
         int h = getMeasuredHeight();
+        /**
+         * 保持view的宽高一样
+         */
         if (w != h) {
             int x = Math.max(w, h);
             setMeasuredDimension(x, x);
@@ -74,10 +78,16 @@ public class DragPointView extends AppCompatTextView {
     @Override
     public void setBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
+        /**
+         * DragPointView背景设置为绘制出来的圆
+         */
         DragPointView.this.setBackgroundDrawable(createStateListDrawable((getHeight() > getWidth() ? getHeight()
                 : getWidth()) / 2, backgroundColor));
     }
 
+    /**
+     * 设置居中，DragPointView背景设置为绘制出来的圆
+     */
     private void initbg() {
         setGravity(Gravity.CENTER);
         getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -109,7 +119,7 @@ public class DragPointView extends AppCompatTextView {
                 if (scrollParent != null) {
                     scrollParent.requestDisallowInterceptTouchEvent(true);
                 }
-                int location[] = new int[2];
+                int[] location = new int[2];
                 getLocationOnScreen(location);
                 x = location[0] + (getWidth() / 2) - p[0];
                 y = location[1] + (getHeight() / 2) - p[1];
@@ -130,11 +140,20 @@ public class DragPointView extends AppCompatTextView {
                 if (scrollParent != null) {
                     scrollParent.requestDisallowInterceptTouchEvent(false);
                 }
-                if (!pointView.broken) { // 没有拉断
+                if (!pointView.broken) {
+                    /**
+                     * 没有拉断
+                     */
                     pointView.cancel();
-                } else if (pointView.nearby) {// 拉断了,但是又回去了
+                } else if (pointView.nearby) {
+                    /**
+                     * 拉断了,但是又回去了
+                     */
                     pointView.cancel();
-                } else { // 彻底拉断了
+                } else {
+                    /**
+                     * 彻底拉断了
+                     */
                     pointView.broken();
                 }
                 break;
@@ -173,9 +192,18 @@ public class DragPointView extends AppCompatTextView {
         private Circle c2;
         private Paint paint;
         private Path path = new Path();
-        private int maxDistance = 8; // 10倍半径距离视为拉断
-        private boolean broken; // 是否拉断过
-        private boolean out; // 放手的时候是否拉断
+        /**
+         * 10倍半径距离视为拉断
+         */
+        private int maxDistance = 8;
+        /**
+         * 是否拉断过
+         */
+        private boolean broken;
+        /**
+         * 放手的时候是否拉断
+         */
+        private boolean out;
         private boolean nearby;
         private int brokenProgress;
 
@@ -187,6 +215,9 @@ public class DragPointView extends AppCompatTextView {
         public void init() {
             paint = new Paint();
             paint.setColor(backgroundColor);
+            /**
+             * 抗锯齿，平滑
+             */
             paint.setAntiAlias(true);
         }
 
@@ -196,15 +227,23 @@ public class DragPointView extends AppCompatTextView {
             c2 = new Circle(endX, endY, r);
         }
 
+        /**
+         * 刷新拖动圆的坐标
+         *
+         * @param x
+         * @param y
+         */
         public void refrashXY(float x, float y) {
             c2.x = x;
             c2.y = y;
-            // 以前的半径应该根据距离缩小点了
-            // 计算出距离
+            /**
+             * 以前的半径应该根据距离缩小点了
+             * 计算出距离
+             */
             double distance = c1.getDistance(c2);
             int rate = 10;
             c1.r = (float) ((c2.r * c2.r * rate) / (distance + (c2.r * rate)));
-            Log.i("info", "c1: " + c1.r);
+            KLog.e("info", "c1: " + c1.r);
             invalidate();
         }
 
@@ -213,15 +252,24 @@ public class DragPointView extends AppCompatTextView {
             super.onDraw(canvas);
             canvas.drawColor(Color.TRANSPARENT);
             if (out) {
+                /**
+                 * 放手的时候拉断了
+                 */
                 float dr = c2.r / 2 + c2.r * 4 * (brokenProgress / 100f);
-                Log.i("info", "dr" + dr);
+                KLog.e("info", "dr" + dr);
+                /**
+                 * 拉断时的爆炸效果，中间一个点，四个角分别四个点
+                 * 中、左上、左下、右上、右下
+                 */
                 canvas.drawCircle(c2.x, c2.y, c2.r / (brokenProgress + 1), paint);
                 canvas.drawCircle(c2.x - dr, c2.y - dr, c2.r / (brokenProgress + 2), paint);
                 canvas.drawCircle(c2.x + dr, c2.y - dr, c2.r / (brokenProgress + 2), paint);
                 canvas.drawCircle(c2.x - dr, c2.y + dr, c2.r / (brokenProgress + 2), paint);
                 canvas.drawCircle(c2.x + dr, c2.y + dr, c2.r / (brokenProgress + 2), paint);
             } else {
-                // 绘制手指跟踪的圆形
+                /**
+                 * 放手的时候没有拉断
+                 */
                 if (catchBitmap == null || (catchBitmap != null && catchBitmap.isRecycled())) {
                     return;
                 }
@@ -244,7 +292,10 @@ public class DragPointView extends AppCompatTextView {
                             * cos));
                     canvas.drawPath(path, paint);
                 } else {
-                    broken = true; // 已经拉断了
+                    /**
+                     * 已经拉断了
+                     */
+                    broken = true;
                 }
             }
 
@@ -316,6 +367,12 @@ public class DragPointView extends AppCompatTextView {
             }
         }
 
+        /**
+         * 圆实体类
+         * x：圆心坐标x
+         * y：圆心坐标y
+         * r：圆半径
+         */
         class Circle {
             float x;
             float y;
@@ -327,6 +384,12 @@ public class DragPointView extends AppCompatTextView {
                 this.r = r;
             }
 
+            /**
+             * 获取新圆对象与初始圆对象圆心间距离
+             *
+             * @param c 新圆对象
+             * @return
+             */
             public double getDistance(Circle c) {
                 float deltaX = x - c.x;
                 float deltaY = y - c.y;
@@ -338,12 +401,21 @@ public class DragPointView extends AppCompatTextView {
     }
 
     /**
+     * StateListDrawable
+     * 让您将许多图形图像分配给一个可绘制的图形，并通过一个字符串ID值来交换可见项
+     * 解析xml文件中的selector标签
+     * <p>
+     * 这里的操作相当于就是新建了一个shape类型的xml,圆
+     *
      * @param radius 圆角角度
      * @param color  填充颜色
      * @return StateListDrawable 对象
      */
     public static StateListDrawable createStateListDrawable(int radius, int color) {
         StateListDrawable bg = new StateListDrawable();
+        /**
+         * 倾斜度
+         */
         GradientDrawable gradientStateNormal = new GradientDrawable();
         gradientStateNormal.setColor(color);
         gradientStateNormal.setShape(GradientDrawable.RECTANGLE);
