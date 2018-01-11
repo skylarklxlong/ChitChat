@@ -8,6 +8,9 @@
     <color name="colorTransparent">#00000000</color>
     <color name="colorWhitePress">#e8e8e8</color>
 
+    <color name="item_selecter_pressed_color">#e6e6e6</color>
+    <color name="item_bg">#ffffff</color>
+    <color name="lineColor">#cccccc</color>
 
     <color name="color_text_01">#ffffff</color>
     <color name="color_text_02">#999999</color>

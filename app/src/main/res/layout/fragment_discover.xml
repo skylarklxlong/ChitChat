@@ -1,11 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ebebeb"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Discover" />
+        android:layout_height="40dp"
+        android:background="@color/colorWhitePress">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14dp"
+            android:text="聊天室"
+            android:textColor="#353535"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:background="@color/lineColor" />
+
+    <LinearLayout
+        android:id="@+id/ll_chatroom1"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@drawable/selector_list_item"
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14dp"
+            android:drawableLeft="@drawable/ic_icon_chat_1"
+            android:drawablePadding="14dp"
+            android:gravity="center_vertical"
+            android:text="聊天室 I"
+            android:textColor="@color/color_text_03" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:background="@color/lineColor" />
+
+    <LinearLayout
+        android:id="@+id/ll_chatroom2"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@drawable/selector_list_item"
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14dp"
+            android:drawableLeft="@drawable/ic_icon_chat_2"
+            android:drawablePadding="14dp"
+            android:gravity="center_vertical"
+            android:text="聊天室 II"
+            android:textColor="@color/color_text_03" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:background="@color/lineColor" />
+
+    <LinearLayout
+        android:id="@+id/ll_chatroom3"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@drawable/selector_list_item"
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14dp"
+            android:drawableLeft="@drawable/ic_icon_chat_3"
+            android:drawablePadding="14dp"
+            android:gravity="center_vertical"
+            android:text="聊天室 III"
+            android:textColor="@color/color_text_03" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:background="@color/lineColor" />
+
+    <LinearLayout
+        android:id="@+id/ll_chatroom4"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="@drawable/selector_list_item"
+        android:clickable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14dp"
+            android:drawableLeft="@drawable/ic_icon_chat_4"
+            android:drawablePadding="14dp"
+            android:gravity="center_vertical"
+            android:text="聊天室 IV"
+            android:textColor="@color/color_text_03" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.25dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:background="@color/lineColor" />
 </LinearLayout>
