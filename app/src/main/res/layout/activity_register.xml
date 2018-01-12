@@ -106,7 +106,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="20dp"
                 android:layout_weight="4"
-                android:background="@drawable/selector_btn_login"
+                android:background="@drawable/selector_btn_pink"
                 android:clickable="false"
                 android:minHeight="1dp"
                 android:minWidth="1dp"
@@ -145,7 +145,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="34dp"
-            android:background="@drawable/selector_btn_login"
+            android:background="@drawable/selector_btn_pink"
             android:text="注册"
             android:textColor="@color/colorWhite" />
     </LinearLayout>

@@ -24,13 +24,16 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 import online.himakeit.chitchat.Constant;
 import online.himakeit.chitchat.R;
+import online.himakeit.chitchat.SealUserInfoManager;
 import online.himakeit.chitchat.server.network.http.HttpException;
 import online.himakeit.chitchat.server.response.GetTokenResponse;
 import online.himakeit.chitchat.server.response.GetUserInfoByIdResponse;
 import online.himakeit.chitchat.server.response.LoginResponse;
 import online.himakeit.chitchat.ui.widget.ClearWriteEditText;
 import online.himakeit.chitchat.ui.widget.LoadDialog;
+import online.himakeit.chitchat.utils.CommonUtils;
 import online.himakeit.chitchat.utils.KeyboardUtils;
+import online.himakeit.chitchat.utils.RongGenerate;
 import online.himakeit.chitchat.utils.TextStrUtils;
 import online.himakeit.chitchat.utils.Toasts;
 
@@ -136,7 +139,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_login_forgot:
-                startActivityForResult(new Intent(LoginActivity.this, ForgetPasswordActivity.class), 1);
+                startActivityForResult(new Intent(LoginActivity.this, ForgetPasswordActivity.class), 2);
                 break;
             case R.id.tv_login_register:
                 startActivityForResult(new Intent(LoginActivity.this, RegisterActivity.class), 1);
@@ -146,30 +149,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 passwordString = mCwedPassWord.getText().toString().trim();
                 if (TextUtils.isEmpty(phoneString)) {
                     Toasts.showShort("手机号不能为空");
-                    mCwedUserName.shakeAnimation();
+                    mCwedUserName.setShakeAnimation();
                     return;
                 }
                 if (TextStrUtils.isMobileNum(phoneString)) {
                     Toasts.showShort("请输入正确的手机号码");
-                    mCwedUserName.shakeAnimation();
+                    mCwedUserName.setShakeAnimation();
                     return;
                 }
                 if (TextUtils.isEmpty(passwordString)) {
                     Toasts.showShort("密码不能为空");
-                    mCwedPassWord.shakeAnimation();
+                    mCwedPassWord.setShakeAnimation();
                     return;
                 }
                 if (" ".equals(passwordString)) {
                     Toasts.showShort("密码不能为包含空格");
-                    mCwedPassWord.shakeAnimation();
+                    mCwedPassWord.setShakeAnimation();
                     return;
                 }
                 LoadDialog.show(mContext);
                 mSpEditor.putBoolean("exit", false);
                 mSpEditor.apply();
                 // TODO: 2018/1/11 测试
-//                request(LOGIN, true);
-                goToMain();
+                request(LOGIN, true);
+//                goToMain();
                 break;
             default:
         }
@@ -237,7 +240,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     KLog.e(TAG, "LOGIN onSuccess connectResultId is : " + s);
                                     mSpEditor.putString(Constant.SEALTALK_LOGIN_ID, s);
                                     mSpEditor.apply();
-                                    // TODO: 2018/1/9 修改数据库存储路径为根据userId
+                                    SealUserInfoManager.getInstance().openDB();
                                     request(SYNC_USER_INFO, true);
 
                                 }
@@ -273,7 +276,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     KLog.e(TAG, "GET_TOKEN onSuccess connectResultId is : " + s);
                                     mSpEditor.putString(Constant.SEALTALK_LOGIN_ID, s);
                                     mSpEditor.apply();
-                                    // TODO: 2018/1/9 修改数据库存储路径为根据userId
+                                    SealUserInfoManager.getInstance().openDB();
                                     request(SYNC_USER_INFO, true);
                                 }
 
@@ -290,7 +293,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     GetUserInfoByIdResponse getUserInfoByIdResponse = (GetUserInfoByIdResponse) result;
                     if (getUserInfoByIdResponse.getCode() == 200) {
                         if (TextUtils.isEmpty(getUserInfoByIdResponse.getResult().getPortraitUri())) {
-                            // TODO: 2018/1/9 要做处理
+                            getUserInfoByIdResponse.getResult().setPortraitUri(RongGenerate.generateDefaultAvatar(getUserInfoByIdResponse.getResult().getNickname(), getUserInfoByIdResponse.getResult().getId()));
                         }
                         String nickname = getUserInfoByIdResponse.getResult().getNickname();
                         String portraitUri = getUserInfoByIdResponse.getResult().getPortraitUri();
@@ -300,7 +303,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         RongIM.getInstance().refreshUserInfoCache(
                                 new UserInfo(connectResultId, nickname, Uri.parse(portraitUri)));
                     }
-                    // TODO: 2018/1/9 同步好友,群组,群组成员,黑名单数据
+                    //不继续在login界面同步好友,群组,群组成员信息
+                    SealUserInfoManager.getInstance().getAllUserInfo();
                     goToMain();
                     break;
                 default:
@@ -310,7 +314,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onFailure(int requestCode, int state, Object result) {
-        // TODO: 2018/1/9 判断是否有网
+        if (!CommonUtils.isNetworkConnected(mContext)) {
+            LoadDialog.dismiss(mContext);
+            Toasts.showShort("网络不可用");
+            return;
+        }
         switch (requestCode) {
             case LOGIN:
                 LoadDialog.dismiss(mContext);
@@ -342,6 +350,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mSpEditor.putString(Constant.SEALTALK_LOGING_PHONE, phoneString);
         mSpEditor.putString(Constant.SEALTALK_LOGING_PASSWORD, passwordString);
         mSpEditor.apply();
+        LoadDialog.dismiss(mContext);
+        Toasts.showShort("登录成功");
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
     }

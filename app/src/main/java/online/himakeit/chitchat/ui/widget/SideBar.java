@@ -90,7 +90,9 @@ public class SideBar extends View {
              * (右侧字体大小)
              */
             paint.setTextSize(30);
-            //选中的状态
+            /**
+             * 选中的状态
+             */
             if (i == choose) {
                 /**
                  * 选中字母的颜色 目前为白
@@ -107,7 +109,10 @@ public class SideBar extends View {
             float xPos = width / 2 - paint.measureText(b[i]) / 2;
             float yPos = singleHeight * i + singleHeight;
             canvas.drawText(b[i], xPos, yPos, paint);
-            paint.reset();//重置画笔
+            /**
+             * 重置画笔
+             */
+            paint.reset();
         }
     }
 

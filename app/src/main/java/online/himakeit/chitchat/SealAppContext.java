@@ -37,8 +37,10 @@ import online.himakeit.chitchat.db.Friend;
 import online.himakeit.chitchat.db.Groups;
 import online.himakeit.chitchat.message.module.SealExtensionModule;
 import online.himakeit.chitchat.server.network.http.HttpException;
+import online.himakeit.chitchat.server.pinyin.CharacterParser;
 import online.himakeit.chitchat.server.response.ContactNotificationMessageData;
 import online.himakeit.chitchat.ui.activity.LoginActivity;
+import online.himakeit.chitchat.ui.activity.MainActivity;
 import online.himakeit.chitchat.ui.activity.NewFriendListActivity;
 import online.himakeit.chitchat.ui.activity.UserDetailActivity;
 import online.himakeit.chitchat.ui.broadcast.BroadcastManager;
@@ -80,8 +82,7 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
         this.mContext = mContext;
         initListener();
         mActivities = new ArrayList<>();
-        // TODO: 2018/1/9 初始化SealUserInfoManager
-
+        SealUserInfoManager.init(mContext);
     }
 
     /**
@@ -146,8 +147,7 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
         editor.apply();
         /*//这些数据清除操作之前一直是在login界面,因为app的数据库改为按照userID存储,退出登录时先直接删除
         //这种方式是很不友好的方式,未来需要修改同app server的数据同步方式*/
-        // TODO: 2018/1/10 要实现
-//        SealUserInfoManager.getInstance().closeDB();
+        SealUserInfoManager.getInstance().closeDB();
         RongIM.getInstance().logout();
         Intent loginActivityIntent = new Intent();
         loginActivityIntent.setClass(mContext, LoginActivity.class);
@@ -194,8 +194,7 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
         if (userInfo != null && userInfo.getName() != null && userInfo.getPortraitUri() != null) {
             Intent intent = new Intent(context, UserDetailActivity.class);
             intent.putExtra("conversationType", conversationType.getValue());
-            // TODO: 2018/1/10 汉字与拼音互转
-            Friend friend = null;
+            Friend friend = CharacterParser.getInstance().generateFriendFromUserInfo(userInfo);
             intent.putExtra("friend", friend);
             intent.putExtra("type", CLICK_CONVERSATION_USER_PORTRAIT);
             context.startActivity(intent);
@@ -274,8 +273,7 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
 
     @Override
     public Group getGroupInfo(String s) {
-        // TODO: 2018/1/10 要操作
-//        SealUserInfoManager.getInstance().getGroupInfo(s);
+        SealUserInfoManager.getInstance().getGroupInfo(s);
         return null;
     }
 
@@ -300,8 +298,7 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
      */
     @Override
     public UserInfo getUserInfo(String s) {
-        // TODO: 2018/1/10 要操作
-//        SealUserInfoManager.getInstance().getUserInfo(s);
+        SealUserInfoManager.getInstance().getUserInfo(s);
         return null;
     }
 
@@ -331,7 +328,16 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
                     return false;
                 }
                 if (c != null) {
-                    // TODO: 2018/1/10 要做操作
+                    if (SealUserInfoManager.getInstance().isFriendsRelationship(contactNotificationMessage.getSourceUserId())) {
+                        return false;
+                    }
+                    SealUserInfoManager.getInstance().addFriend(
+                            new Friend(contactNotificationMessage.getSourceUserId(),
+                                    c.getSourceUserNickname(),
+                                    null, null, null, null,
+                                    null, null,
+                                    CharacterParser.getInstance().getSpelling(c.getSourceUserNickname()),
+                                    null));
                 }
                 BroadcastManager.getInstance(mContext).sendBroadcast(UPDATE_FRIEND);
                 BroadcastManager.getInstance(mContext).sendBroadcast(UPDATE_RED_DOT);
@@ -349,9 +355,8 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
                     e.printStackTrace();
                 }
                 if (groupNotificationMessage.getOperation().equals("Create")) {
-                    // TODO: 2018/1/10 要实现
-//                    SealUserInfoManager.getInstance().getGroups(groupID);
-//                    SealUserInfoManager.getInstance().getGroupMember(groupID);
+                    SealUserInfoManager.getInstance().getGroups(groupID);
+                    SealUserInfoManager.getInstance().getGroupMember(groupID);
                 } else if (groupNotificationMessage.getOperation().equals("Dismiss")) {
                     handleGroupDismiss(groupID);
                 } else if (groupNotificationMessage.getOperation().equals("Kicked")) {
@@ -376,33 +381,28 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
                         }
 
                         List<String> kickedUserIDs = data.getTargetUserIds();
-                        // TODO: 2018/1/10 要实现
-//                        SealUserInfoManager.getInstance().deleteGroupMembers(groupID, kickedUserIDs);
+                        SealUserInfoManager.getInstance().deleteGroupMembers(groupID, kickedUserIDs);
                         BroadcastManager.getInstance(mContext).sendBroadcast(UPDATE_GROUP_MEMBER, groupID);
                     }
                 } else if (groupNotificationMessage.getOperation().equals("Add")) {
-                    // TODO: 2018/1/10 要实现
-//                    SealUserInfoManager.getInstance().getGroupMember(groupID);
+                    SealUserInfoManager.getInstance().getGroupMember(groupID);
                     BroadcastManager.getInstance(mContext).sendBroadcast(UPDATE_GROUP_MEMBER, groupID);
                 } else if (groupNotificationMessage.getOperation().equals("Quit")) {
                     if (data != null) {
                         List<String> quitUserIDs = data.getTargetUserIds();
-                        // TODO: 2018/1/10 要实现
-//                        SealUserInfoManager.getInstance().deleteGroupMembers(groupID, quitUserIDs);
+                        SealUserInfoManager.getInstance().deleteGroupMembers(groupID, quitUserIDs);
                         BroadcastManager.getInstance(mContext).sendBroadcast(UPDATE_GROUP_MEMBER, groupID);
                     }
                 } else if (groupNotificationMessage.getOperation().equals("Rename")) {
                     if (data != null) {
                         String targetGroupName = data.getTargetGroupName();
-                        // TODO: 2018/1/10 要实现
-//                        SealUserInfoManager.getInstance().updateGroupsName(groupID, targetGroupName);
+                        SealUserInfoManager.getInstance().updateGroupsName(groupID, targetGroupName);
                         List<String> groupNameList = new ArrayList<>();
                         groupNameList.add(groupID);
                         groupNameList.add(data.getTargetGroupName());
                         groupNameList.add(data.getOperatorNickname());
                         BroadcastManager.getInstance(mContext).sendBroadcast(UPDATE_GROUP_NAME, groupNameList);
-                        // TODO: 2018/1/10 要实现
-                        Groups oldGroup = null;//SealUserInfoManager.getInstance().getGroupsByID(groupID);
+                        Groups oldGroup = SealUserInfoManager.getInstance().getGroupsByID(groupID);
                         if (oldGroup != null) {
                             Group group = new Group(groupID, data.getTargetGroupName(), Uri.parse(oldGroup.getPortraitUri()));
                             RongIM.getInstance().refreshGroupInfoCache(group);
@@ -438,10 +438,9 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
 
     public void popAllActivity() {
         try {
-            // TODO: 2018/1/10 对MainActivity中ViewPager的操作
-//            if (MainActivity.mViewPager != null) {
-//                MainActivity.mViewPager.setCurrentItem(0);
-//            }
+            if (MainActivity.mViewPager != null) {
+                MainActivity.mViewPager.setCurrentItem(0);
+            }
             for (Activity activity : mActivities) {
                 if (activity != null) {
                     activity.finish();
@@ -458,8 +457,7 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
             @Override
             public void onTokenIncorrect() {
                 KLog.e(TAG, "ConnectCallback connect onTokenIncorrect");
-                // TODO: 2018/1/10 重新获取
-//                SealUserInfoManager.getInstance().reGetToken();
+                SealUserInfoManager.getInstance().reGetToken();
             }
 
             @Override
@@ -543,9 +541,8 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
 
             }
         });
-        // TODO: 2018/1/10 要实现的
-//        SealUserInfoManager.getInstance().deleteGroups(new Groups(groupID));
-//        SealUserInfoManager.getInstance().deleteGroupMembers(groupID);
+        SealUserInfoManager.getInstance().deleteGroups(new Groups(groupID));
+        SealUserInfoManager.getInstance().deleteGroupMembers(groupID);
         BroadcastManager.getInstance(mContext).sendBroadcast(Constant.GROUP_LIST_UPDATE);
         BroadcastManager.getInstance(mContext).sendBroadcast(GROUP_DISMISS, groupID);
     }

@@ -53,19 +53,34 @@ public class SelectableRoundedImageView extends AppCompatImageView {
     // original ImageView.
     private ScaleType mScaleType = ScaleType.FIT_CENTER;
 
+    /**
+     * 四个角的圆角半径
+     */
     private float mLeftTopCornerRadius = 0.0f;
     private float mRightTopCornerRadius = 0.0f;
     private float mLeftBottomCornerRadius = 0.0f;
     private float mRightBottomCornerRadius = 0.0f;
 
+    /**
+     * 边界宽
+     */
     private float mBorderWidth = 0.0f;
+    /**
+     * 边界默认颜色
+     */
     private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
     private ColorStateList mBorderColor = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
 
+    /**
+     * 是否为椭圆
+     */
     private boolean isOval = false;
 
     private Drawable mDrawable;
 
+    /**
+     * 四个角的半径
+     */
     private float[] mRadii = new float[]{0, 0, 0, 0, 0, 0, 0, 0};
 
     public SelectableRoundedImageView(Context context) {
@@ -79,21 +94,21 @@ public class SelectableRoundedImageView extends AppCompatImageView {
     public SelectableRoundedImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
-        TypedArray a = context.obtainStyledAttributes(attrs,
+        TypedArray typedArray = context.obtainStyledAttributes(attrs,
                 R.styleable.SelectableRoundedImageView, defStyle, 0);
 
-        final int index = a.getInt(R.styleable.SelectableRoundedImageView_android_scaleType, -1);
+        final int index = typedArray.getInt(R.styleable.SelectableRoundedImageView_android_scaleType, -1);
         if (index >= 0) {
             setScaleType(sScaleTypeArray[index]);
         }
 
-        mLeftTopCornerRadius = a.getDimensionPixelSize(
+        mLeftTopCornerRadius = typedArray.getDimensionPixelSize(
                 R.styleable.SelectableRoundedImageView_sriv_left_top_corner_radius, 0);
-        mRightTopCornerRadius = a.getDimensionPixelSize(
+        mRightTopCornerRadius = typedArray.getDimensionPixelSize(
                 R.styleable.SelectableRoundedImageView_sriv_right_top_corner_radius, 0);
-        mLeftBottomCornerRadius = a.getDimensionPixelSize(
+        mLeftBottomCornerRadius = typedArray.getDimensionPixelSize(
                 R.styleable.SelectableRoundedImageView_sriv_left_bottom_corner_radius, 0);
-        mRightBottomCornerRadius = a.getDimensionPixelSize(
+        mRightBottomCornerRadius = typedArray.getDimensionPixelSize(
                 R.styleable.SelectableRoundedImageView_sriv_right_bottom_corner_radius, 0);
 
         if (mLeftTopCornerRadius < 0.0f || mRightTopCornerRadius < 0.0f
@@ -108,20 +123,20 @@ public class SelectableRoundedImageView extends AppCompatImageView {
                 mLeftBottomCornerRadius, mLeftBottomCornerRadius
         };
 
-        mBorderWidth = a.getDimensionPixelSize(
+        mBorderWidth = typedArray.getDimensionPixelSize(
                 R.styleable.SelectableRoundedImageView_sriv_border_width, 0);
         if (mBorderWidth < 0) {
             throw new IllegalArgumentException("border width cannot be negative.");
         }
 
-        mBorderColor = a
+        mBorderColor = typedArray
                 .getColorStateList(R.styleable.SelectableRoundedImageView_sriv_border_color);
         if (mBorderColor == null) {
             mBorderColor = ColorStateList.valueOf(DEFAULT_BORDER_COLOR);
         }
 
-        isOval = a.getBoolean(R.styleable.SelectableRoundedImageView_sriv_oval, false);
-        a.recycle();
+        isOval = typedArray.getBoolean(R.styleable.SelectableRoundedImageView_sriv_oval, false);
+        typedArray.recycle();
 
         updateDrawable();
     }

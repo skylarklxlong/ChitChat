@@ -37,7 +37,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     ImageView mIvChats, mIvContact, mIvDiscover, mIvMe, mIvContactDot, mIvDiscoverDot,
             mIvMeDot, mIvSearch, mIvAdd;
     TextView mTvChats, mTvContact, mTvDiscover, mTvMe;
-    ViewPager mViewPager;
+    public static ViewPager mViewPager;
     DragPointView mDpvUnReadNum;
     List<Fragment> mFragmentList = new ArrayList<>();
     ConversationListFragment mConversationListFragment = null;
@@ -112,7 +112,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")//系统
                         .appendQueryParameter(Conversation.ConversationType.DISCUSSION.getName(), "true")
                         .build();
-                mConversationsTypes = new Conversation.ConversationType[] {Conversation.ConversationType.PRIVATE,
+                mConversationsTypes = new Conversation.ConversationType[]{Conversation.ConversationType.PRIVATE,
                         Conversation.ConversationType.GROUP,
                         Conversation.ConversationType.PUBLIC_SERVICE,
                         Conversation.ConversationType.APP_PUBLIC_SERVICE,
@@ -129,7 +129,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                         .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "false")//订阅号
                         .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")//系统
                         .build();
-                mConversationsTypes = new Conversation.ConversationType[] {Conversation.ConversationType.PRIVATE,
+                mConversationsTypes = new Conversation.ConversationType[]{Conversation.ConversationType.PRIVATE,
                         Conversation.ConversationType.GROUP,
                         Conversation.ConversationType.PUBLIC_SERVICE,
                         Conversation.ConversationType.APP_PUBLIC_SERVICE,

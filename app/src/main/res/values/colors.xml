@@ -7,6 +7,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorTransparent">#00000000</color>
     <color name="colorWhitePress">#e8e8e8</color>
+    <color name="colorGary">#88cccccc</color>
 
     <color name="item_selecter_pressed_color">#e6e6e6</color>
     <color name="item_bg">#ffffff</color>

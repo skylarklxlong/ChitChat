@@ -125,7 +125,7 @@ public class ClearWriteEditText extends AppCompatEditText implements View.OnFocu
     /**
      * 设置晃动动画
      */
-    public void shakeAnimation() {
+    public void setShakeAnimation() {
         this.startAnimation(shakeAnimation(3));
     }
 

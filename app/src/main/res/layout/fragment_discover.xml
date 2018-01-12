@@ -29,7 +29,7 @@
         android:background="@color/lineColor" />
 
     <LinearLayout
-        android:id="@+id/ll_chatroom1"
+        android:id="@+id/ll_discover_chatroom1"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:background="@drawable/selector_list_item"
@@ -55,7 +55,7 @@
         android:background="@color/lineColor" />
 
     <LinearLayout
-        android:id="@+id/ll_chatroom2"
+        android:id="@+id/ll_discover_chatroom2"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:background="@drawable/selector_list_item"
@@ -81,7 +81,7 @@
         android:background="@color/lineColor" />
 
     <LinearLayout
-        android:id="@+id/ll_chatroom3"
+        android:id="@+id/ll_discover_chatroom3"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:background="@drawable/selector_list_item"
@@ -107,7 +107,7 @@
         android:background="@color/lineColor" />
 
     <LinearLayout
-        android:id="@+id/ll_chatroom4"
+        android:id="@+id/ll_discover_chatroom4"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:background="@drawable/selector_list_item"
