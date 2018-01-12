@@ -103,6 +103,7 @@
                 </RelativeLayout>
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/iv_bottom_contact_dot"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
@@ -151,6 +152,7 @@
                 </RelativeLayout>
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/iv_bottom_discover_dot"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
@@ -199,6 +201,7 @@
                 </RelativeLayout>
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/iv_bottom_me_dot"
                     android:layout_width="10dp"
                     android:layout_height="10dp"

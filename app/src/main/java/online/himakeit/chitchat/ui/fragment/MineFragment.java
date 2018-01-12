@@ -17,6 +17,8 @@ import online.himakeit.chitchat.R;
  */
 public class MineFragment extends Fragment {
 
+    public static final String SHOW_RED = "SHOW_RED";
+
     @Override
     public View onCreateView(LayoutInflater inflater,  ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
