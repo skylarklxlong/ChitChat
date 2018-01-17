@@ -117,11 +117,17 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
      * init 后就能设置的监听
      */
     private void initListener() {
+        /**
+         * 设置会话界面操作的监听器。
+         */
         RongIM.setConversationBehaviorListener(this);
         RongIM.setConversationListBehaviorListener(this);
         RongIM.setConnectionStatusListener(this);
         RongIM.setUserInfoProvider(this, true);
         RongIM.setGroupInfoProvider(this, true);
+        /**
+         * 设置地理位置提供者,不用位置的同学可以注掉此行代码
+         */
         RongIM.setLocationProvider(this);
         setInputProvider();
         setReadReceiptConversationType();
@@ -354,12 +360,12 @@ public class SealAppContext implements RongIM.ConversationListBehaviorListener,
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                if (groupNotificationMessage.getOperation().equals("Create")) {
+                if ("Create".equals(groupNotificationMessage.getOperation())) {
                     SealUserInfoManager.getInstance().getGroups(groupID);
                     SealUserInfoManager.getInstance().getGroupMember(groupID);
-                } else if (groupNotificationMessage.getOperation().equals("Dismiss")) {
+                } else if ("Dismiss".equals(groupNotificationMessage.getOperation())) {
                     handleGroupDismiss(groupID);
-                } else if (groupNotificationMessage.getOperation().equals("Kicked")) {
+                } else if ("Kicked".equals(groupNotificationMessage.getOperation())) {
                     if (data != null) {
                         List<String> memberIdList = data.getTargetUserIds();
                         if (memberIdList != null) {

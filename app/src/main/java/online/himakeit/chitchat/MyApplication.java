@@ -14,7 +14,11 @@ import com.socks.library.KLog;
 import io.rong.imageloader.core.DisplayImageOptions;
 import io.rong.imageloader.core.display.FadeInBitmapDisplayer;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.widget.provider.RealTimeLocationMessageProvider;
 import io.rong.imlib.ipc.RongExceptionHandler;
+import online.himakeit.chitchat.message.TestMessage;
+import online.himakeit.chitchat.message.provider.ContactNotificationMessageProvider;
+import online.himakeit.chitchat.message.provider.TestMessageProvider;
 import online.himakeit.chitchat.stetho.MyDatabaseDriver;
 import online.himakeit.chitchat.stetho.MyDatabaseFilesProvider;
 import online.himakeit.chitchat.utils.SharedPreferencesContext;
@@ -66,15 +70,15 @@ public class MyApplication extends MultiDexApplication {
             RongIM.init(this);
             initLog();
             initToast();
-//            SealAppContext.init(this);
+            SealAppContext.init(this);
             SharedPreferencesContext.init(this);
             Thread.setDefaultUncaughtExceptionHandler(new RongExceptionHandler(this));
 
             try {
-//                RongIM.registerMessageTemplate(new ContactNotificationMessageProvider());
-//                RongIM.registerMessageTemplate(new RealTimeLocationMessageProvider());
-//                RongIM.registerMessageType(TestMessage.class);
-//                RongIM.registerMessageTemplate(new TestMessageProvider());
+                RongIM.registerMessageTemplate(new ContactNotificationMessageProvider());
+                RongIM.registerMessageTemplate(new RealTimeLocationMessageProvider());
+                RongIM.registerMessageType(TestMessage.class);
+                RongIM.registerMessageTemplate(new TestMessageProvider());
             } catch (Exception e) {
                 e.printStackTrace();
             }

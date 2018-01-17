@@ -1,4 +1,4 @@
-package online.himakeit.chitchat.server;
+package online.himakeit.chitchat.ui.broadcast;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,7 +12,7 @@ import online.himakeit.chitchat.ui.activity.MainActivity;
  * @date：2018/1/12
  * @mail1：skylarklxlong@outlook.com
  * @mail2：li_xuelong@126.com
- * @des:
+ * @des:机型适配: 处理三星 note2  note3 按 Home 键退至后台的花屏问题
  */
 public class HomeWatcherReceiver extends BroadcastReceiver {
     private static final String LOG_TAG = "HomeReceiver";

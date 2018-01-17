@@ -33,7 +33,7 @@ import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.message.ContactNotificationMessage;
 import online.himakeit.chitchat.R;
-import online.himakeit.chitchat.server.HomeWatcherReceiver;
+import online.himakeit.chitchat.ui.broadcast.HomeWatcherReceiver;
 import online.himakeit.chitchat.ui.adapter.ConversationListAdapterEx;
 import online.himakeit.chitchat.ui.broadcast.BroadcastManager;
 import online.himakeit.chitchat.ui.fragment.ContactFragment;

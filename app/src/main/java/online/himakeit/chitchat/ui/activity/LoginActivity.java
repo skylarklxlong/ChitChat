@@ -170,8 +170,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 LoadDialog.show(mContext);
                 mSpEditor.putBoolean("exit", false);
                 mSpEditor.apply();
-                // TODO: 2018/1/11 测试
                 request(LOGIN, true);
+                // TODO: 2018/1/11 测试
 //                goToMain();
                 break;
             default:
